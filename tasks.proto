@@ -1,0 +1,43 @@
+syntax = "proto3";
+package tasks;
+
+import "google/protobuf/timestamp.proto";
+
+service TaskService {
+  rpc GetTask(TaskRequest) returns (Task) {};
+  rpc ListTask(TaskRequest) returns (stream Task) {};
+  rpc AddTask(Task) returns (TaskResponse) {};
+  rpc DoneTask(Task) returns (TaskResponse) {};
+}
+
+message TaskResponse {
+  int32 id = 1;
+  google.protobuf.Timestamp done = 2; 
+  
+  enum Code {
+    SUCCEED = 0;
+    FAILED = 1;
+  }
+}
+
+message TaskRequest {
+  int32 id = 1;
+  string tag = 2;  
+}
+
+message Task {
+  string name = 1;
+  int32 id = 2;
+  string title = 3;
+  
+  repeated Tag tags = 7;
+
+  google.protobuf.Timestamp due_time = 4;
+  google.protobuf.Timestamp added = 5;
+  google.protobuf.Timestamp updated = 6;
+}
+
+message Tag {
+  string name = 1;
+  int32 id = 2;
+}
